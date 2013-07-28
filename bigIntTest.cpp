@@ -9,12 +9,13 @@ what tests are being run), set VERBOSE to true.
 In order to compile and run this script, please put this file in the
 same directory as your bigInt.cpp and  run these commands:
 
-    g++ bigIntTest.cpp -o bigIntTest
+    g++ -c bigInt.cpp -o bigInt.o
+    g++ bigIntTest.cpp bigInt.o -o bigIntTest
     ./bigIntTest
 
 Or you can do it all in one line:
 
-    g++ bigIntTest.cpp -o bigIntTest && ./bigIntTest
+    g++ -c bigInt.cpp -o bigInt.o && g++ bigIntTest.cpp bigInt.o -o bigIntTest && ./bigIntTest
     
 That's all there is to it! Please give it a test and let me know if you
 find any bugs. Keep in mind that strange output may be the result of a
@@ -23,9 +24,12 @@ bug in your bigInt class and NOT a bug in this testing framework!
 written by Jay Hendren james.hendren@colorado.edu 7/26/2013
 */
 
-#include "bigInt.cpp"
+#include "bigInt.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <sstream>
+#include <iostream>
+#include <string>
 using namespace std;
 
 // USER-EDITABLE VALUES; CHANGE THESE TO AFFECT OUTPUT

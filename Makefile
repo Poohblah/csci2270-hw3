@@ -9,7 +9,9 @@ run: all
 	./$(MAIN_OUT)
 
 test:
-	g++ -Wall bigIntTest.cpp -o $(TEST_OUT) && ./$(TEST_OUT)
+	g++ -c bigInt.cpp -o bigInt.o
+	g++ -Wall bigIntTest.cpp bigInt.o -o $(TEST_OUT)
+	./$(TEST_OUT)
 
 cstr:
 	g++ -Wall cstrexamples.cxx -o cstrexamples.o && ./cstrexamples.o
