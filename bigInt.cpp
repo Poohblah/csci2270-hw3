@@ -335,6 +335,104 @@ void bigInt::operator -= (const bigInt& intToSubtract)
     this->bigIntArray = bint->getBigIntArray();
 }
 
+// extra credit operators
+
+bigInt operator *(const bigInt &firstInt, const bigInt &secondInt) {
+    // take care of base case / sanity check first
+    bigInt zero = bigInt("0");
+    if (firstInt == zero || secondInt == zero) { return zero; }
+    
+    // now we do long multiplication!
+    // take each digit from each number, multiply together,
+    // add appropriate # of zeros to the end, and sum it all up!
+
+    bigInt product = zero;
+    char *bint1 = firstInt.getBigIntArray();
+    char *bint2 = secondInt.getBigIntArray();
+
+    for (int i = 0; i < firstInt.length(); i++) {
+        for (int j = 0; j < secondInt.length(); j++) {
+            // declare variable which will hold our intermediate
+            char prodc_str[(firstInt.length() - i) + (secondInt.length() - j)];
+            prodc_str[0] = '\0';
+
+            // intermediate number is the product of the two
+            // can get it using ints and multiplying
+            int m1 = bint1[i] - '0';
+            int m2 = bint2[j] - '0';
+            int prod = m1 * m2;
+
+            char tens[2];
+            char ones[2];
+            
+            if (prod < 10) {
+                tens[0] = '\0';
+                ones[0] = prod + '0';
+            } else {
+                tens[0] = (prod / 10) + '0';
+                ones[0] = (prod % 10) + '0';
+            }
+
+            tens[1] = '\0'; ones[1] = '\0';
+
+            strcat(prodc_str, tens);
+            strcat(prodc_str, ones);
+
+            // now we add trailing zeros
+            int zeros = (firstInt.length() - i - 1) + (secondInt.length() - j - 1);
+            for (int z = 0; z < zeros; z++) { strcat(prodc_str, "0"); }
+
+            // and finally add to our total.
+            // cout << " tens: " << tens << " ones: " << ones << " zeros: " << zeros << endl;
+            // cout << " intermediate: " << prodc_str << endl;
+            product += bigInt(prodc_str);
+        }
+    }
+
+    return product;
+}
+
+bigInt operator /(const bigInt &firstInt, const bigInt &secondInt) {
+    // a division algorithm made up by me for decimal division
+    // Q = N / D where Q is the quotient, N is the numerator, and D is the denominator
+    // basically, multiply N by 10 until the numbers are close
+    // then perform repeated subtraction to figure out the rest.
+    // It's not particularly efficient, but it's more efficient than repeated subtraction
+    // and it's easier to code than pretty much any other division algorithm that I know of
+    bigInt zero = bigInt(0);
+    bigInt one = bigInt(1);
+    
+    // base case = N is zero, D is 1, N ==D, or N < D
+    if (firstInt == zero) { return zero; }
+    if (secondInt == one) { return firstInt; }
+    if (firstInt == secondInt) { return one; }
+    if (secondInt > firstInt) { return zero; }
+
+    bigInt Q = zero;
+    bigInt D = secondInt;
+    bigInt N = firstInt;
+
+    // now let's do the whole divide-by-ten thing
+    int Nbase = N.length();
+    int Dbase = D.length();
+    int basediff = Nbase - Dbase - 1;
+    if (basediff > 0) {
+        // figure out how many zeros we need to add, then add them
+        bigInt base = one;
+        for (bigInt i = one; i < basediff; i += one) { base = base * bigInt(10); }
+
+        return ((N - (base * D)) / D) + base;
+    }
+
+    // here's the repeated subtraction bit
+    while (D < N) {
+        Q += one;
+        D += secondInt;
+    }
+
+    return Q;
+}
+
 //ostream is implemented for you
 ostream& operator <<(ostream& outs, const bigInt& source)
 {  

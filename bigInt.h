@@ -62,4 +62,10 @@ bool operator <(const bigInt &firstInt, const bigInt &secondInt);
 //operator >
 bool operator >(const bigInt &firstInt, const bigInt &secondInt);
 
+//extra credit or whatever
+//operator*
+bigInt operator *(const bigInt &firstInt, const bigInt &secondInt);
+//operator/
+bigInt operator /(const bigInt &firstInt, const bigInt &secondInt);    
+
 #endif
