@@ -27,9 +27,9 @@ written by Jay Hendren james.hendren@colorado.edu 7/26/2013
 #include "bigInt.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sstream>
 #include <iostream>
-#include <string>
 using namespace std;
 
 // USER-EDITABLE VALUES; CHANGE THESE TO AFFECT OUTPUT
